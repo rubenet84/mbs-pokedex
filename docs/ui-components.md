@@ -1,4 +1,4 @@
-# UI Components
+# Componentes de UI
 
 ## ViewToggler
 
@@ -48,7 +48,7 @@
 
 ## PokemonCard (card/list)
 
-`PokemonCard` ahora soporta dos presentaciones con una sola API.
+`PokemonCard` soporta dos presentaciones con una sola API.
 
 ### Props
 

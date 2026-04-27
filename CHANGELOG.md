@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.1] - 2026-04-27
+### Added
+- README del proyecto completamente traducido y adaptado al contexto de la Pokédex.
+
+### Changed
+- Documentación técnica normalizada en español (`docs/development-guide.md` y `docs/ui-components.md`).
+- Ajuste de versión a `1.3.1` para reflejar la actualización documental.
+
 ## [1.3.0] - 2026-04-27
 ### Added
 - Sistema de favoritos con persistencia en `localStorage` desde la lista principal.
