@@ -6,7 +6,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 
 /**
  * Fallback local de iconos compatibles con la API mínima de lucide-react
- * para LayoutGrid y List.
+ * para LayoutGrid, List, Search y X.
  */
 function BaseIcon({ size = 24, className, children, ...props }: IconProps & { children: ReactNode }) {
   return (
@@ -48,6 +48,24 @@ export function List(props: IconProps) {
       <line x1="3" y1="6" x2="3.01" y2="6" />
       <line x1="3" y1="12" x2="3.01" y2="12" />
       <line x1="3" y1="18" x2="3.01" y2="18" />
+    </BaseIcon>
+  );
+}
+
+export function Search(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <circle cx="11" cy="11" r="8" />
+      <path d="m21 21-4.3-4.3" />
+    </BaseIcon>
+  );
+}
+
+export function X(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M18 6 6 18" />
+      <path d="m6 6 12 12" />
     </BaseIcon>
   );
 }
