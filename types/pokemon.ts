@@ -76,6 +76,30 @@ export interface Pokemon {
 }
 
 /**
+ * Especie de Pokémon para cadenas de evolución.
+ */
+export interface PokemonSpecies {
+  evolution_chain: {
+    url: string;
+  };
+}
+
+/**
+ * Nodo recursivo de evolución.
+ */
+export interface EvolutionChainNode {
+  species: NamedAPIResource;
+  evolves_to: EvolutionChainNode[];
+}
+
+/**
+ * Cadena de evolución de PokeAPI.
+ */
+export interface EvolutionChain {
+  chain: EvolutionChainNode;
+}
+
+/**
  * Modelo derivado para renderizar tarjetas en la grilla principal.
  */
 export interface PokemonListItem {
