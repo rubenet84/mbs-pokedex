@@ -1,7 +1,8 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import { formatPokemonName } from '@/lib/pokeapi';
+import { Heart } from '@/components/lucide-react';
+import { formatPokemonName, isLegendaryPokemon } from '@/lib/pokeapi';
 import type { PokemonListItem } from '@/types/pokemon';
 
 /**
@@ -35,36 +36,55 @@ export function getTypeStyles(type: string): { badge: string; card: string } {
   return typeColorMap[type] ?? { badge: 'bg-zinc-500', card: 'from-zinc-100 to-zinc-50' };
 }
 
-/**
- * Variantes de presentación para la tarjeta de Pokémon.
- */
 export type PokemonCardViewType = 'card' | 'list';
 
 interface PokemonCardProps {
-  /**
-   * Datos resumidos del Pokémon para renderizar nombre, id, imagen y tipos.
-   */
   pokemon: PokemonListItem;
-  /**
-   * Tipo de vista a renderizar: "card" para grilla, "list" para fila horizontal.
-   */
   viewType?: PokemonCardViewType;
+  isFavorite: boolean;
+  onToggleFavorite: (pokemonId: number) => void;
 }
 
-/**
- * Tarjeta de Pokémon reutilizable para modo grilla y modo lista.
- */
-export default function PokemonCard({ pokemon, viewType = 'card' }: PokemonCardProps) {
+export default function PokemonCard({
+  pokemon,
+  viewType = 'card',
+  isFavorite,
+  onToggleFavorite,
+}: PokemonCardProps) {
   const mainType = pokemon.types[0] ?? 'normal';
   const cardStyle = getTypeStyles(mainType);
+  const isLegendary = isLegendaryPokemon(pokemon.id);
+
+  const favoriteButton = (
+    <button
+      type="button"
+      onClick={(event) => {
+        event.preventDefault();
+        onToggleFavorite(pokemon.id);
+      }}
+      className="z-10 rounded-full border border-zinc-300 bg-white/90 p-1.5 text-zinc-500 transition hover:scale-105"
+      aria-label={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+    >
+      <Heart size={16} className={isFavorite ? 'fill-red-500 text-red-500' : 'text-zinc-500'} />
+    </button>
+  );
+
+  const glitterOverlay = isLegendary ? (
+    <div
+      aria-hidden="true"
+      className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,rgba(255,255,255,0.7),transparent_30%),radial-gradient(circle_at_80%_30%,rgba(250,204,21,0.35),transparent_25%),radial-gradient(circle_at_30%_80%,rgba(99,102,241,0.25),transparent_25%)] opacity-80"
+    />
+  ) : null;
 
   if (viewType === 'list') {
     return (
       <Link
         href={`/pokemon/${pokemon.name}`}
-        className={`group flex items-center gap-3 rounded-2xl border border-zinc-200 bg-gradient-to-r ${cardStyle.card} p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:gap-4 sm:p-4`}
+        className={`group relative flex items-center gap-3 overflow-hidden rounded-2xl border border-zinc-200 bg-gradient-to-r ${cardStyle.card} p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:gap-4 sm:p-4`}
         aria-label={`Ver detalle de ${pokemon.name}`}
       >
+        {glitterOverlay}
+        <div className="absolute top-2 right-2">{favoriteButton}</div>
         <div className="relative h-16 w-16 shrink-0 sm:h-20 sm:w-20">
           <Image
             src={pokemon.image}
@@ -72,7 +92,7 @@ export default function PokemonCard({ pokemon, viewType = 'card' }: PokemonCardP
             fill
             sizes="(max-width: 768px) 64px, 80px"
             className="object-contain drop-shadow-md transition group-hover:scale-105"
-            priority={pokemon.id <= 8}
+            loading="lazy"
           />
         </div>
 
@@ -101,24 +121,26 @@ export default function PokemonCard({ pokemon, viewType = 'card' }: PokemonCardP
   return (
     <Link
       href={`/pokemon/${pokemon.name}`}
-      className={`group rounded-2xl border border-zinc-200 bg-gradient-to-br ${cardStyle.card} p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg`}
+      className={`group relative overflow-hidden rounded-2xl border border-zinc-200 bg-gradient-to-br ${cardStyle.card} p-4 shadow-sm transition hover:-translate-y-1 hover:shadow-lg`}
       aria-label={`Ver detalle de ${pokemon.name}`}
     >
-      <div className="flex items-center justify-between">
+      {glitterOverlay}
+      <div className="relative z-10 flex items-center justify-between">
         <p className="text-sm font-semibold text-zinc-500">#{String(pokemon.id).padStart(3, '0')}</p>
+        {favoriteButton}
       </div>
-      <div className="relative mx-auto mt-3 h-36 w-36">
+      <div className="relative z-10 mx-auto mt-3 h-36 w-36">
         <Image
           src={pokemon.image}
           alt={`Artwork oficial de ${pokemon.name}`}
           fill
           sizes="(max-width: 768px) 40vw, 20vw"
           className="object-contain drop-shadow-md transition group-hover:scale-105"
-          priority={pokemon.id <= 8}
+          loading="lazy"
         />
       </div>
-      <h2 className="mt-2 text-lg font-bold text-zinc-900">{formatPokemonName(pokemon.name)}</h2>
-      <div className="mt-3 flex flex-wrap gap-2">
+      <h2 className="relative z-10 mt-2 text-lg font-bold text-zinc-900">{formatPokemonName(pokemon.name)}</h2>
+      <div className="relative z-10 mt-3 flex flex-wrap gap-2">
         {pokemon.types.map((type) => {
           const styles = getTypeStyles(type);
           return (

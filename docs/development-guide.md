@@ -1,4 +1,4 @@
-# Development Guide
+# Guía de Desarrollo
 
 ## Arquitectura general
 

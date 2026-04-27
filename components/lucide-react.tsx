@@ -5,8 +5,7 @@ interface IconProps extends SVGProps<SVGSVGElement> {
 }
 
 /**
- * Fallback local de iconos compatibles con la API mínima de lucide-react
- * para LayoutGrid, List, Search y X.
+ * Fallback local de iconos compatibles con la API mínima de lucide-react.
  */
 function BaseIcon({ size = 24, className, children, ...props }: IconProps & { children: ReactNode }) {
   return (
@@ -66,6 +65,48 @@ export function X(props: IconProps) {
     <BaseIcon {...props}>
       <path d="M18 6 6 18" />
       <path d="m6 6 12 12" />
+    </BaseIcon>
+  );
+}
+
+export function Heart(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="m12 21-1-1C5 15 2 12 2 8.5A4.5 4.5 0 0 1 6.5 4 5 5 0 0 1 12 7a5 5 0 0 1 5.5-3A4.5 4.5 0 0 1 22 8.5c0 3.5-3 6.5-9 11.5l-1 1Z" />
+    </BaseIcon>
+  );
+}
+
+export function Moon(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <path d="M12 3a7 7 0 1 0 9 9 9 9 0 1 1-9-9" />
+    </BaseIcon>
+  );
+}
+
+export function Sun(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <circle cx="12" cy="12" r="4" />
+      <path d="M12 2v2" />
+      <path d="M12 20v2" />
+      <path d="m4.93 4.93 1.41 1.41" />
+      <path d="m17.66 17.66 1.41 1.41" />
+      <path d="M2 12h2" />
+      <path d="M20 12h2" />
+      <path d="m6.34 17.66-1.41 1.41" />
+      <path d="m19.07 4.93-1.41 1.41" />
+    </BaseIcon>
+  );
+}
+
+export function Volume2(props: IconProps) {
+  return (
+    <BaseIcon {...props}>
+      <polygon points="11 5 6 9 3 9 3 15 6 15 11 19 11 5" />
+      <path d="M15.5 8.5a5 5 0 0 1 0 7" />
+      <path d="M18.5 5.5a9 9 0 0 1 0 13" />
     </BaseIcon>
   );
 }
