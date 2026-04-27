@@ -35,16 +35,68 @@ export function getTypeStyles(type: string): { badge: string; card: string } {
   return typeColorMap[type] ?? { badge: 'bg-zinc-500', card: 'from-zinc-100 to-zinc-50' };
 }
 
+/**
+ * Variantes de presentación para la tarjeta de Pokémon.
+ */
+export type PokemonCardViewType = 'card' | 'list';
+
 interface PokemonCardProps {
+  /**
+   * Datos resumidos del Pokémon para renderizar nombre, id, imagen y tipos.
+   */
   pokemon: PokemonListItem;
+  /**
+   * Tipo de vista a renderizar: "card" para grilla, "list" para fila horizontal.
+   */
+  viewType?: PokemonCardViewType;
 }
 
 /**
- * Tarjeta de Pokémon para la grilla principal.
+ * Tarjeta de Pokémon reutilizable para modo grilla y modo lista.
  */
-export default function PokemonCard({ pokemon }: PokemonCardProps) {
+export default function PokemonCard({ pokemon, viewType = 'card' }: PokemonCardProps) {
   const mainType = pokemon.types[0] ?? 'normal';
   const cardStyle = getTypeStyles(mainType);
+
+  if (viewType === 'list') {
+    return (
+      <Link
+        href={`/pokemon/${pokemon.name}`}
+        className={`group flex items-center gap-3 rounded-2xl border border-zinc-200 bg-gradient-to-r ${cardStyle.card} p-3 shadow-sm transition hover:-translate-y-0.5 hover:shadow-md sm:gap-4 sm:p-4`}
+        aria-label={`Ver detalle de ${pokemon.name}`}
+      >
+        <div className="relative h-16 w-16 shrink-0 sm:h-20 sm:w-20">
+          <Image
+            src={pokemon.image}
+            alt={`Artwork oficial de ${pokemon.name}`}
+            fill
+            sizes="(max-width: 768px) 64px, 80px"
+            className="object-contain drop-shadow-md transition group-hover:scale-105"
+            priority={pokemon.id <= 8}
+          />
+        </div>
+
+        <div className="min-w-0 flex-1">
+          <p className="text-xs font-semibold text-zinc-500 sm:text-sm">#{String(pokemon.id).padStart(3, '0')}</p>
+          <h2 className="truncate text-base font-bold text-zinc-900 sm:text-lg">{formatPokemonName(pokemon.name)}</h2>
+        </div>
+
+        <div className="flex max-w-[45%] flex-wrap justify-end gap-2">
+          {pokemon.types.map((type) => {
+            const styles = getTypeStyles(type);
+            return (
+              <span
+                key={`${pokemon.name}-${type}`}
+                className={`${styles.badge} rounded-full px-2.5 py-1 text-[10px] font-semibold uppercase tracking-wide text-white sm:px-3 sm:text-xs`}
+              >
+                {type}
+              </span>
+            );
+          })}
+        </div>
+      </Link>
+    );
+  }
 
   return (
     <Link
