@@ -1,10 +1,10 @@
 export const dynamic = 'force-dynamic';
 
-import PokemonCard from '@/components/PokemonCard';
+import PokemonCollection from '@/components/PokemonCollection';
 import { getPokemonList } from '@/lib/pokeapi';
 
 /**
- * Home de la Pokedex con una grilla responsive de tarjetas.
+ * Home de la Pokedex con selector de vista y listado responsivo.
  */
 export default async function HomePage() {
   const pokemons = await getPokemonList(24, 0);
@@ -18,11 +18,7 @@ export default async function HomePage() {
         </p>
       </header>
 
-      <section className="grid grid-cols-1 gap-4 md:grid-cols-3 xl:grid-cols-4">
-        {pokemons.map((pokemon) => (
-          <PokemonCard key={pokemon.name} pokemon={pokemon} />
-        ))}
-      </section>
+      <PokemonCollection pokemons={pokemons} />
     </main>
   );
 }
